@@ -1,10 +1,13 @@
-board = list(range(1, 10)) #Сгенерируем числа от 1 до 9
-def draw_board(board): #Создадим функцию
-    print("-" * 13) #выводим первую строку из 13 "тире"
-    for i in range(3): #в цикле прорисовываем остальные края поля
+board = list(range(1, 10))
+
+def draw_board(board): # Создадим игровую доску
+    print("-" * 13)
+    for i in range(3):
         print("|", board[0 + i * 3], "|", board[1 + i * 3], "|", board[2 + i * 3], "|")
-        print("-" * 13) #выводим последнюю строку из 13 "тире"
-def take_input(player_token): #функция для приёма ввода
+        print("-" * 13)
+
+
+def take_input(player_token): # Функция для приёма ввода
     valid = False
     while not valid:
         player_answer = input("Куда поставим " + player_token + "? ")
@@ -22,4 +25,34 @@ def take_input(player_token): #функция для приёма ввода
         else:
             print("Некорректный ввод. Введите число от 1 до 9.")
 
-draw_board(board)
+
+def check_win(board): # Проверяем игрока на победу
+    win_coord = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+    for each in win_coord:
+        if board[each[0]] == board[each[1]] == board[each[2]]:
+            return board[each[0]]
+    return False
+
+def main(board): # Главная функция
+    counter = 0
+    win = False
+    while not win:
+        draw_board(board)
+        if counter % 2 == 0:
+            take_input("X")
+        else:
+            take_input("O")
+        counter += 1
+
+        tmp = check_win(board)
+        if tmp:
+            print(tmp, "выиграл!")
+            win = True
+            break
+        if counter == 9:
+            print("Ничья!")
+            break
+    draw_board(board)
+main(board)
+
+input("Нажмите Enter для выхода!")
